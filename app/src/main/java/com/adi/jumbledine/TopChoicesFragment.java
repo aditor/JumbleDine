@@ -1,15 +1,18 @@
 package com.adi.jumbledine;
 
 import android.content.Intent;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
+import java.io.IOException;
 import java.util.List;
 
 /**
@@ -19,6 +22,7 @@ public class TopChoicesFragment extends Fragment {
 
     private RecyclerView mChoicesRecyclerView;
     private ChoiceAdapter mAdapter;
+    private static final String TAG = "TopChoicesFragment";
 
     public static TopChoicesFragment newInstance() {
         return new TopChoicesFragment();
@@ -28,6 +32,7 @@ public class TopChoicesFragment extends Fragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setRetainInstance(true);
+        new FetchItemsTask().execute();
     }
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -68,10 +73,10 @@ public class TopChoicesFragment extends Fragment {
             super(itemView);
             //itemView.setOnClickListener(this);
             //mTitleTextView = (TextView) itemView;
-            mTypeTextView = (TextView) itemView.findViewById(R.id.list_item_task_type_text_view);
-            mTitleTextView = (TextView) itemView.findViewById(R.id.list_item_task_title_text_view);
-            mAddressTextView= (TextView) itemView.findViewById(R.id.list_item_task_address_text_view);
-            mDistanceTextView= (TextView) itemView.findViewById(R.id.list_item_task_distance_text_view);
+            mTypeTextView = (TextView) itemView.findViewById(R.id.list_item_choice_type_text_view);
+            mTitleTextView = (TextView) itemView.findViewById(R.id.list_item_choice_title_text_view);
+            mAddressTextView= (TextView) itemView.findViewById(R.id.list_item_choice_address_text_view);
+            mDistanceTextView= (TextView) itemView.findViewById(R.id.list_item_choice_distance_text_view);
         }
 
       /*  //TOAST
@@ -127,5 +132,19 @@ public class TopChoicesFragment extends Fragment {
         }
     }
 
+    //ASYNCHRONOUS
+    private class FetchItemsTask extends AsyncTask<Void,Void,Void> {
+        @Override
+        protected Void doInBackground(Void... params) {
+            try {
+                String result = new YelpFetcher()
+                        .getUrlString("https://www.bignerdranch.com");
+                Log.i(TAG, "Fetched contents of URL: " + result);
+            } catch (IOException ioe) {
+                Log.e(TAG, "Failed to fetch URL: ", ioe);
+            }
+            return null;
+        }
+    }
 
 }

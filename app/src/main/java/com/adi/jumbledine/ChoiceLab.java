@@ -25,7 +25,7 @@ public class ChoiceLab {
 
         for (int i = 0; i < 100; i++) {
             Choice choice = new Choice();
-            choice.setType("Choice #" + i);
+            choice.setType("Type #" + i);
             choice.setTitle("Restaurant #" + i);
             choice.setDistance(i + "km");
             choice.setAddress("Street" + i);

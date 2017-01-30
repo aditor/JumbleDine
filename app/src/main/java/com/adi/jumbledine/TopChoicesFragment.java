@@ -136,13 +136,7 @@ public class TopChoicesFragment extends Fragment {
     private class FetchItemsTask extends AsyncTask<Void,Void,Void> {
         @Override
         protected Void doInBackground(Void... params) {
-            try {
-                String result = new YelpFetcher()
-                        .getUrlString("https://www.bignerdranch.com");
-                Log.i(TAG, "Fetched contents of URL: " + result);
-            } catch (IOException ioe) {
-                Log.e(TAG, "Failed to fetch URL: ", ioe);
-            }
+            new YelpFetcher().fetchItems();
             return null;
         }
     }
